@@ -20,4 +20,10 @@ public class VaccinationCenterServiceImpl implements VaccinationCenterService{
         VaccinationCenter vn = repo.findById(id).get();
         return vn;
     }
+
+    @Override
+    public VaccinationCenter getById(Long id) {
+        VaccinationCenter center = repo.findById(id).get();
+        return center;
+    }
 }

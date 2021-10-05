@@ -1,5 +1,6 @@
 package zw.co.afrosoft.vaccinationcenter.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ public class VaccinationCenterController {
         return new ResponseEntity<>(vcenter, HttpStatus.CREATED);
     }
     @GetMapping("getVaccinationCenterById/{id}")
+    @HystrixCommand(fallbackMethod = "handleCitizenDownTime")
     public ResponseEntity<RequiredResponse> getAllDataBasedOnCenterId(@PathVariable Long id){
         RequiredResponse requiredResponse = new RequiredResponse();
         //1st get the vaccination center details
@@ -37,7 +39,11 @@ public class VaccinationCenterController {
         requiredResponse.setCitizens(listOfCitizens);
 
         return new ResponseEntity<>(requiredResponse, HttpStatus.OK);
-
-
+    }
+    public ResponseEntity<RequiredResponse> handleCitizenDownTime(@PathVariable Long id){
+        RequiredResponse requiredResponse = new RequiredResponse();
+        VaccinationCenter center = service.getById(id);
+        requiredResponse.setCenter(center);
+        return new ResponseEntity<>(requiredResponse, HttpStatus.OK);
     }
 }
