@@ -40,6 +40,7 @@ public class VaccinationCenterController {
 
         return new ResponseEntity<>(requiredResponse, HttpStatus.OK);
     }
+    //Fallback Method
     public ResponseEntity<RequiredResponse> handleCitizenDownTime(@PathVariable Long id){
         RequiredResponse requiredResponse = new RequiredResponse();
         VaccinationCenter center = service.getById(id);
